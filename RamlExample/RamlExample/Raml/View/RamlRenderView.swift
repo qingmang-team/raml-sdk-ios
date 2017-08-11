@@ -37,7 +37,7 @@ class RamlRenderView: UIView {
             [weak self] in            
             self?.collectionView.reloadData()
             let count = self?.dataProvider.numberOfNode()
-            print("parse complete \(count)")
+//            print("parse complete \(count)")
         }        
         dataProvider.parseModel(contentHtml: self.contentHtml, async: true)
     }
