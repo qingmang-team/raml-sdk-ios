@@ -44,4 +44,8 @@ TODO: Add long description of the pod here.
   s.dependency 'SDWebImage'
   s.dependency 'SDWebImage/GIF'
 
+  s.pod_target_xcconfig =  {
+        'SWIFT_VERSION' => '3.0',
+  }
+
 end
