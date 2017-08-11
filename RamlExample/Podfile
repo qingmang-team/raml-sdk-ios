@@ -10,7 +10,5 @@ project 'RamlExample.xcodeproj'
 platform :ios, "8.0"
 
 target :'RamlExample' do
-	pod 'SwiftyJSON'
-    pod 'SDWebImage'
-    pod 'SDWebImage/GIF'
+    pod 'RamlSDK', :path => '../'	
 end

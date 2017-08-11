@@ -10,17 +10,21 @@ import UIKit
 import AVFoundation
 import AVKit
 
-class RamlRenderView: UIView {
+public class RamlRenderView: UIView {
     let dataProvider = DetailRamlContentDataProvider()
     let contentHtml:String
     
-    init(frame: CGRect, contentHtml:String) {
+    public init(frame: CGRect, contentHtml:String) {
         self.contentHtml = contentHtml 
         super.init(frame: frame)
         setup()
         loadContent()
     }
-        
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func setup() {
         addSubview(collectionView)
         collectionView.backgroundColor = .white
@@ -56,9 +60,9 @@ class RamlRenderView: UIView {
     }
  
     //Other
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
 
     //Property
     lazy var collectionView:UICollectionView = {
@@ -69,15 +73,15 @@ class RamlRenderView: UIView {
         return collectionView 
     }()
     
-    var viewController:UIViewController?
+    public var viewController:UIViewController?
 }
 
 extension RamlRenderView : UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataProvider.numberOfNode()
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let node = dataProvider.node(atIndexPath: indexPath.row) {
             if let textNode = node as? HtmlTextNode {
                 if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RAMLDetailTextCell", for: indexPath) as? RAMLDetailTextCell {
@@ -118,7 +122,7 @@ extension RamlRenderView : UICollectionViewDataSource {
 }
 
 extension RamlRenderView : UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if let node = dataProvider.node(atIndexPath: indexPath.row) {
             if node.contentSize.width > 0 {
                 return node.contentSize

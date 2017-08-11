@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import RamlSDK
 
 class ViewController: UIViewController {
 
@@ -18,7 +19,7 @@ class ViewController: UIViewController {
                 let str = try String(contentsOfFile: path)
                 let json = JSON(parseJSON:str)
                 let articleJson = json["article"]
-                let contentHtml = articleJson["contentHtml"].stringValue                
+                let contentHtml = articleJson["contentHtml"].stringValue                            
                 let view = RamlRenderView(frame: self.view.bounds, contentHtml: contentHtml)
                 view.viewController = self
                 self.view.addSubview(view)

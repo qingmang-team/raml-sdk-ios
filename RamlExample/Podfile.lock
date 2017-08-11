@@ -1,5 +1,9 @@
 PODS:
   - FLAnimatedImage (1.0.12)
+  - RamlSDK (0.9.0):
+    - SDWebImage
+    - SDWebImage/GIF
+    - SwiftyJSON
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
@@ -9,15 +13,18 @@ PODS:
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
-  - SDWebImage
-  - SDWebImage/GIF
-  - SwiftyJSON
+  - RamlSDK (from `../`)
+
+EXTERNAL SOURCES:
+  RamlSDK:
+    :path: "../"
 
 SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  RamlSDK: 97d187a1f11904538e07d895ea6feb0d2ad19846
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 8aa9f473b319661d01a425e1dfc7d9a9ddfa31b5
+PODFILE CHECKSUM: 9b717b75fec20e9e8d75f5a6618b9b57e00aad0d
 
 COCOAPODS: 1.2.0
