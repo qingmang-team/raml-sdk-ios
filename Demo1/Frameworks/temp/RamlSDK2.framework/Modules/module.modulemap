@@ -1,0 +1,10 @@
+framework module RamlSDK2 {
+  umbrella header "RamlSDK2.h"
+
+  export *
+  module * { export * }
+}
+
+module RamlSDK2.Swift {
+    header "RamlSDK2-Swift.h"
+}
