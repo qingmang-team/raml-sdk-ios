@@ -18,6 +18,8 @@ class HtmlNode: NSObject {
     var bottom:CGFloat = 0
     var rawJsonString = ""
     
+    var textLeftPadding:CGFloat = 0
+    var textRightPadding:CGFloat = 0
     
     var rowHeight:CGFloat {
         get {
@@ -28,6 +30,6 @@ class HtmlNode: NSObject {
     var contentSize:CGSize {
         get {            
             return CGSize(width: self.contentWidth, height: self.rowHeight)
-        }
+        }                
     }
 }

@@ -23,11 +23,23 @@ class RAMLDetailImageCell: UICollectionViewCell {
     }
     
     func config(imageNode:HtmlImageNode) {
-//        setup()
-        self.imageNode = imageNode
+        self.imageNode = imageNode        
         if let urlStr = imageNode.imageURL, let url = URL(string:urlStr){
             imageView.sd_setShowActivityIndicatorView(true)
-            imageView.sd_setImage(with: url)
+            if imageNode.isUnknownSize {
+                imageView.sd_setImage(with: url, completed: {[weak self, unowned imageNode] (image, error, type, url) in
+                    if let image = image, let strongifySelf = self {
+                        imageNode.isUnknownSize = false
+                        imageNode.imageWidth = strongifySelf.frame.size.width
+                        imageNode.imageHeight = image.size.height * (imageNode.imageWidth/image.size.width)
+                        imageNode.contentHeight = imageNode.imageHeight 
+                        strongifySelf.reloadUnknowSizeBlock?()
+                    }                    
+                })    
+            }else {
+                imageView.sd_setImage(with: url)
+            }
+            
         }
         imageView.frame = self.bounds
     }
@@ -46,4 +58,7 @@ class RAMLDetailImageCell: UICollectionViewCell {
     lazy var imageView:FLAnimatedImageView = {
         return FLAnimatedImageView()
     }()
+    
+    var isUnknowSize = false
+    var reloadUnknowSizeBlock:(()->())?
 }

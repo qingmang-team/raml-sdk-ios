@@ -36,8 +36,11 @@ class RAMLDetailTextCell: UICollectionViewCell {
         if let textNode = self.textNode, textNode.shouldAlignCenter {
             textLabel.sizeToFit()
             textLabel.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
-        }else {
-            textLabel.frame = self.bounds;   
+        }else {            
+//            textLabel.frame = self.bounds;
+            let leftPadding = textNode?.textLeftPadding ?? 0
+            let rightPadding = textNode?.textRightPadding ?? 0
+            textLabel.frame = CGRect(x: leftPadding, y: 0, width: self.frame.size.width - rightPadding - leftPadding , height: self.frame.size.height)
         }                
     }
     

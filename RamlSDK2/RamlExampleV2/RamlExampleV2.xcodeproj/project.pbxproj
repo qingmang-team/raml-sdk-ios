@@ -7,18 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7FD01ED61F72701000929453 /* RamlSDK2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FD01ED71F72701000929453 /* RamlSDK2.framework */; };
 		7FDE45831F3DF34E001A515F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDE45821F3DF34E001A515F /* AppDelegate.swift */; };
 		7FDE45851F3DF34E001A515F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDE45841F3DF34E001A515F /* ViewController.swift */; };
 		7FDE45881F3DF34E001A515F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FDE45861F3DF34E001A515F /* Main.storyboard */; };
 		7FDE458A1F3DF34E001A515F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7FDE45891F3DF34E001A515F /* Assets.xcassets */; };
 		7FDE458D1F3DF34E001A515F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FDE458B1F3DF34E001A515F /* LaunchScreen.storyboard */; };
-		7FDE45961F3DF35A001A515F /* RamlSDK2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FDE45951F3DF35A001A515F /* RamlSDK2.framework */; };
 		7FDE459B1F3DF459001A515F /* article3.json in Resources */ = {isa = PBXBuildFile; fileRef = 7FDE45981F3DF459001A515F /* article3.json */; };
 		7FDE459C1F3DF459001A515F /* article2.json in Resources */ = {isa = PBXBuildFile; fileRef = 7FDE45991F3DF459001A515F /* article2.json */; };
 		7FDE459D1F3DF459001A515F /* article.json in Resources */ = {isa = PBXBuildFile; fileRef = 7FDE459A1F3DF459001A515F /* article.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7FD01ED71F72701000929453 /* RamlSDK2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RamlSDK2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FDE457F1F3DF34E001A515F /* RamlExampleV2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RamlExampleV2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FDE45821F3DF34E001A515F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FDE45841F3DF34E001A515F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,7 +27,6 @@
 		7FDE45891F3DF34E001A515F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7FDE458C1F3DF34E001A515F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7FDE458E1F3DF34E001A515F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7FDE45951F3DF35A001A515F /* RamlSDK2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RamlSDK2.framework; path = "../../../Library/Developer/Xcode/DerivedData/RamlSDK2Work-blaytsqojqtgcldyozdcnaligmsc/Build/Products/Debug-iphoneos/RamlSDK2.framework"; sourceTree = "<group>"; };
 		7FDE45981F3DF459001A515F /* article3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = article3.json; sourceTree = "<group>"; };
 		7FDE45991F3DF459001A515F /* article2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = article2.json; sourceTree = "<group>"; };
 		7FDE459A1F3DF459001A515F /* article.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = article.json; sourceTree = "<group>"; };
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7FDE45961F3DF35A001A515F /* RamlSDK2.framework in Frameworks */,
+				7FD01ED61F72701000929453 /* RamlSDK2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,7 +78,7 @@
 		7FDE45941F3DF35A001A515F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7FDE45951F3DF35A001A515F /* RamlSDK2.framework */,
+				7FD01ED71F72701000929453 /* RamlSDK2.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

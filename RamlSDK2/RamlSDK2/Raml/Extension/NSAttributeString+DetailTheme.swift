@@ -26,7 +26,8 @@ extension NSMutableAttributedString {
                                    shouldSmallFont:Bool,
                                    alignment:NSTextAlignment) -> NSMutableAttributedString {
         let style = NSMutableParagraphStyle()
-        style.maximumLineHeight = shouldSmallFont ? 0 : 28
+//        style.maximumLineHeight = shouldSmallFont ? 0 : 28
+        style.lineSpacing = 1.5
         style.lineBreakMode = .byWordWrapping        
         let baselineOffet = shouldSmallFont ? 0 : 4
         style.alignment = alignment

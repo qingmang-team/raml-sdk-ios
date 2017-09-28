@@ -11,11 +11,21 @@ import AVFoundation
 import AVKit
 
 public class RamlRenderView: UIView {
-    let dataProvider = DetailRamlContentDataProvider()
-    let contentHtml:String
     
     public init(frame: CGRect, contentHtml:String) {
-        self.contentHtml = contentHtml 
+        self.contentHtml = contentHtml
+        let setting = RAMLRenderSetting()
+        self.dataProvider = DetailRamlContentDataProvider(setting: setting)
+        self.setting = setting
+        super.init(frame: frame)
+        setup()
+        loadContent()
+    }
+    
+    public init(frame: CGRect, contentHtml:String, setting:RAMLRenderSetting) {
+        self.contentHtml = contentHtml         
+        self.setting = setting
+        self.dataProvider = DetailRamlContentDataProvider(setting: setting)
         super.init(frame: frame)
         setup()
         loadContent()
@@ -40,7 +50,7 @@ public class RamlRenderView: UIView {
         dataProvider.htmlParseDoneBlock = {
             [weak self] in            
             self?.collectionView.reloadData()
-            let count = self?.dataProvider.numberOfNode()
+//            let count = self?.dataProvider.numberOfNode()
 //            print("parse complete \(count)")
         }        
         dataProvider.parseModel(contentHtml: self.contentHtml, async: true)
@@ -72,6 +82,9 @@ public class RamlRenderView: UIView {
         let collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: layout)
         return collectionView 
     }()
+    var setting:RAMLRenderSetting
+    let dataProvider:DetailRamlContentDataProvider
+    let contentHtml:String
     
     public var viewController:UIViewController?
 }
@@ -91,6 +104,10 @@ extension RamlRenderView : UICollectionViewDataSource {
             }else if let imageNode = node as? HtmlImageNode {
                 if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RAMLDetailImageCell", for: indexPath) as? RAMLDetailImageCell {
                     cell.config(imageNode: imageNode)
+                    cell.reloadUnknowSizeBlock = {
+                        [weak self] in        
+                        self?.collectionView.reloadItems(at: [indexPath])         
+                    }
                     return cell
                 }
             }else if let multimediaNode = node as? HtmlMultimediaNode {

@@ -15,17 +15,27 @@ class DetailRamlContentDataProvider: NSObject {
     var imageURLArray = [String]()
     var imageNodeArray = [HtmlImageNode]()    
     var contentHtml:String?
-    var contentMaxWidth: CGFloat     
+    var contentMaxWidth: CGFloat    
+    var setting:RAMLRenderSetting
     var htmlParseDoneBlock:(()->())?
            
     override init() {
         let minWidth = min(UIScreen.main.bounds.width,UIScreen.main.bounds.height)
         contentMaxWidth = minWidth
+        self.setting = RAMLRenderSetting()
         super.init()
     }
     
     init(contentWidth: CGFloat) {
         self.contentMaxWidth = contentWidth
+        self.setting = RAMLRenderSetting()
+        super.init()
+    }
+    
+    init(setting:RAMLRenderSetting) {
+        let minWidth = min(UIScreen.main.bounds.width,UIScreen.main.bounds.height)
+        contentMaxWidth = minWidth        
+        self.setting = setting
         super.init()
     }
     
@@ -37,80 +47,63 @@ class DetailRamlContentDataProvider: NSObject {
     
     func checkImageNodeLayout(node:HtmlImageNode, index:Int) {
         if node.isUnknownSize {
-            node.imageHeight = 210
+            node.imageHeight = 40
             node.contentWidth = self.contentMaxWidth
-            node.contentHeight = 210
+            node.contentHeight = 40
             node.imageWidth = self.contentMaxWidth
         }
     }
     
     func parseJsonStr(jsonString:String) {
         var resultArray = [HtmlNode]()
-//        if (jsonString?.characters.count ?? 0) > 0 {
-            let json = JSON(parseJSON: jsonString)
-            for (idx, subJson): (String, JSON) in json {
-                if let type = subJson["type"].int {
-                    switch type {
-                    case 0:
-                        if let textNode = DetailRamlContentDataProvider.createTextNode(subJson) {
-                            resultArray.append(textNode)
-                        }
-                    case 1:
-                        if let imageNode = self.createImageNode(subJson) {
-                            self.checkImageNodeLayout(node: imageNode, index: idx == "0" ? 0 : 1)
-                            resultArray.append(imageNode)
-                            if let titleTextNode = imageNode.titleTextNode {
-                                resultArray.append(titleTextNode)
-                            }
-                        }
-                    case 2:
-                        if let videoNode = self.createVideoNode(subJson) {
-                            resultArray.append(videoNode)
-                            if let titleTextNode = videoNode.titleTextNode{
-                                resultArray.append(titleTextNode)
-                            }
-                        }
-                    case 3:
-                        if let audioNode = self.createAudioNode(subJson) {
-                            resultArray.append(audioNode)
-                            if let titleTextNode = audioNode.titleTextNode {
-                                resultArray.append(titleTextNode)
-                            }
-                        }
-                    case 4:
-                        if let tableNode = self.createTableNode(subJson) {
-                            resultArray.append(tableNode)
-                        }
-                    case 10:
-                        resultArray.append(self.createNewLineTextNode())
-                    case 11:
-                        continue
-                    default:
-                        continue
+        let json = JSON(parseJSON: jsonString)
+        for (idx, subJson): (String, JSON) in json {
+            if let type = subJson["type"].int {
+                switch type {
+                case 0:
+                    let fontSize = setting.fontSize
+                    let font = detailNormalFont()
+                    let fontColor = setting.fontColor
+                    if let textNode = DetailRamlContentDataProvider.createTextNode(subJson, font:font, fontSize:fontSize, fontColor:fontColor) {
+                        resultArray.append(textNode)
                     }
+                case 1:
+                    if let imageNode = self.createImageNode(subJson) {
+                        self.checkImageNodeLayout(node: imageNode, index: idx == "0" ? 0 : 1)
+                        resultArray.append(imageNode)
+                        if let titleTextNode = imageNode.titleTextNode {
+                            resultArray.append(titleTextNode)
+                        }
+                    }
+                case 2:
+                    if let videoNode = self.createVideoNode(subJson) {
+                        resultArray.append(videoNode)
+                        if let titleTextNode = videoNode.titleTextNode{
+                            resultArray.append(titleTextNode)
+                        }
+                    }
+                case 3:
+                    if let audioNode = self.createAudioNode(subJson) {
+                        resultArray.append(audioNode)
+                        if let titleTextNode = audioNode.titleTextNode {
+                            resultArray.append(titleTextNode)
+                        }
+                    }
+                case 4:
+                    if let tableNode = self.createTableNode(subJson) {
+                        resultArray.append(tableNode)
+                    }
+                case 10:
+                    resultArray.append(self.createNewLineTextNode())
+                case 11:
+                    continue
+                default:
+                    continue
                 }
             }
-//        }    
-        
-//        let videoAttachmentNodes:[HtmlNode]? = model.rippleModel?.videoAttachments?.flatMap({ (model) -> HtmlAttachmentNode? in
-//            if let model = model as? RippleModel {
-//                return self.createAttachmentNode(model: model)
-//            }
-//            return nil
-//        })
-//        let shopAttachmentNodes:[HtmlNode]? = model.rippleModel?.shopAttachments?.flatMap({ (model) -> HtmlAttachmentNode? in
-//            if let model = model as? RippleModel {
-//                return self.createAttachmentNode(model: model)
-//            }
-//            return nil
-//        })
-//        if let shopAttachmentNodes = shopAttachmentNodes {                
-//            resultArray.append(contentsOf: shopAttachmentNodes)   
-//        }            
-//        if let videoAttachmentNodes = videoAttachmentNodes {
-//            resultArray.append(contentsOf: videoAttachmentNodes);   
-//        }            
-        self.reset()
+        }
+     
+        reset()
         var nodeArray = [HtmlNode]()
         var previousNode: HtmlNode?
         for (idx,htmlNode) in resultArray.enumerated() {
@@ -122,6 +115,8 @@ class DetailRamlContentDataProvider: NSObject {
             if previousNode == nil {
                 htmlNode.top = 0
             } else if let htmlTextNode = htmlNode as? HtmlTextNode {
+                htmlTextNode.textLeftPadding = self.setting.textLeftPadding
+                htmlTextNode.textRightPadding = self.setting.textRightPadding
                 let size = sizeOfTextNode(node: htmlTextNode)
                 htmlTextNode.contentWidth = self.contentMaxWidth
                 htmlTextNode.contentHeight = size.height
@@ -148,15 +143,12 @@ class DetailRamlContentDataProvider: NSObject {
             previousNode = htmlNode
         }
         self.contentNodeArray.append(contentsOf: nodeArray)
-//        if let model = self.contentModel, nodeArray.count > 0 {
-//            self.contentNodeArray.insert(HtmlHeaderNode(model:model), at: 0)
-//            self.contentNodeArray.append(HtmlFooterNode(model:model))
-//        }
     }
     
     func sizeOfTextNode(node:HtmlTextNode) -> CGSize {
         if let str = node.contentString {
-            let bounds = str.boundingRect(with: CGSize(width:contentMaxWidth, height:1000000), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], context: nil)
+            let maxWidth = contentMaxWidth - node.textLeftPadding - node.textRightPadding
+            let bounds = str.boundingRect(with: CGSize(width:maxWidth, height:1000000), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], context: nil)
             return bounds.size
         }
         return .zero
@@ -188,32 +180,13 @@ class DetailRamlContentDataProvider: NSObject {
         }
         
     }
-    
-    class func createPlainTextNode(_ textJson: JSON) -> HtmlTextNode? {
-        guard let text = textJson["text"]["text"].string else {
-            return nil
-        }
-        let mutableAttr = NSMutableAttributedString.mutableHtmlBodyText(text:text,
-                                                                        textColor: DetailRamlContentDataProvider.normalTextColor(),
-                                                                        font: DetailRamlContentDataProvider.detailNormalFont(),
-                                                                        shouldSmallFont: false,
-                                                                        alignment: .left)
-        let textNode = HtmlTextNode()
-        textNode.contentString = mutableAttr
-        return textNode
-    }
-    
-    class func createTextNode(_ textJson: JSON, fontSize:CGFloat = 16) -> HtmlTextNode? {
+        
+    class func createTextNode(_ textJson: JSON, font:UIFont, fontSize:CGFloat , fontColor:UIColor) -> HtmlTextNode? {
         let idStr = textJson["id"].stringValue
         if let text = textJson["text"]["text"].string,
             let rawString = textJson.rawString(String.Encoding(rawValue: String.Encoding.utf8.rawValue), options: []) {            
-            let textNode = HtmlTextNode()
-            textNode.rawJsonString = rawString
-            var font = DetailRamlContentDataProvider.detailNormalFont()
-            if fontSize != 16 {
-                //font = UIFont.mangoSTFont(fontSize)
-            }
-            var fontColor = DetailRamlContentDataProvider.normalTextColor()
+            let textNode = HtmlTextNode()            
+            textNode.rawJsonString = rawString                                    
             var shouldAlignCenter = false
             var shouldSmallFont = false
             if let textAlign = textJson["text"]["align"].string {
@@ -221,23 +194,20 @@ class DetailRamlContentDataProvider: NSObject {
                     shouldAlignCenter = true
                 }
             }
+            var _font = font
             if let style = textJson["text"]["linetype"].string {
                 switch style {
                 case "aside":
                     shouldAlignCenter = true
                 case "big":
-                    font = UIFont.boldSystemFont(ofSize: fontSize)
+                    _font = UIFont.boldSystemFont(ofSize: fontSize)
                 case "h1","h2":
-                    font = UIFont.boldSystemFont(ofSize: fontSize)                
-//                    font = UIFont.systemFont(ofSize: fontSize)
+                    _font = UIFont.boldSystemFont(ofSize: fontSize)                
                 case "h3":
-                    font = UIFont.systemFont(ofSize: fontSize)
-                    fontColor = .black
+                    _font = UIFont.systemFont(ofSize: fontSize)                    
                 case "small": // TODO: Line height
-                    font = DetailRamlContentDataProvider.detailSmallFont()
-                    shouldSmallFont = true
-                case "pre":
-                    font = DetailRamlContentDataProvider.detailNormalFont()
+                    _font = DetailRamlContentDataProvider.detailSmallFont()
+                    shouldSmallFont = true                
                 default:
                     print("not support \(style)")
                 }
@@ -261,10 +231,7 @@ class DetailRamlContentDataProvider: NSObject {
             if let blockquote = textJson["blockquote"].int, blockquote == 1 {
                 textNode.isBlockquote = true
             }
-            var rawText = text
-//            if RippleLibsSetting.shared().hasLibsEnableChineseTW() {
-//                rawText = rawText.chineseStringTW()   
-//            }            
+            let rawText = text            
             if textNode.isListTag || textNode.isBlockquote {
                 if blockLevel == 0 {
                     blockLevel = 1
@@ -273,7 +240,7 @@ class DetailRamlContentDataProvider: NSObject {
             } 
             mutableAttr = NSMutableAttributedString.mutableHtmlBodyText(text:rawText,
                                                                         textColor: fontColor,
-                                                                        font: font,                                                                            
+                                                                        font: _font,                                                                            
                                                                         shouldSmallFont:shouldSmallFont,
                                                                         alignment: shouldAlignCenter ? .center : .left)
             
@@ -283,14 +250,11 @@ class DetailRamlContentDataProvider: NSObject {
                                                            shouldAlignCenter: shouldAlignCenter,
                                                            textNode: textNode,
                                                            shouldSmallFont: shouldSmallFont, 
-                                                           fontSize:fontSize)
+                                                           fontSize:fontSize, font:_font, fontColor:fontColor)
             }
             do {                
                 let dataDector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
-                var color:UIColor = UIColor.black
-//                if !ReaderSetting.shared().isLightModeBackground {
-//                    color = color.withAlphaComponent(0.7)
-//                }                
+                let color:UIColor = fontColor
                 dataDector.enumerateMatches(in: mutableAttr.string, options: [], range: NSMakeRange(0, mutableAttr.length), using: { (result, flag, stop) in
                     if let result = result, result.resultType == .link, let url = result.url {
                         var foundLink = false
@@ -300,7 +264,7 @@ class DetailRamlContentDataProvider: NSObject {
                             }
                         })
                         if !foundLink {
-                            if let dict = NSMutableAttributedString.mangoHtmlHrefLinkAttribute( DetailRamlContentDataProvider.detailNormalFont(),
+                            if let dict = NSMutableAttributedString.mangoHtmlHrefLinkAttribute(font,
                                                                                         fontColor:color) as NSDictionary as? [String: AnyObject] {
                                 mutableAttr.addAttributes(["kCustomKeyOnlyWork": url], range: result.range)
                                 mutableAttr.addAttributes(dict, range: result.range)                            
@@ -326,6 +290,8 @@ class DetailRamlContentDataProvider: NSObject {
                             textNode: HtmlTextNode?, 
                             shouldSmallFont: Bool, 
                             fontSize:CGFloat = 16, 
+                            font:UIFont,
+                            fontColor:UIColor,
                             maxWidth:CGFloat = 0) {
         if let tag = subJson["tag"].string, let start = subJson["start"].int, let end = subJson["end"].int {
             let maxLength = mutableAttr.length
@@ -340,7 +306,7 @@ class DetailRamlContentDataProvider: NSObject {
                     let font = detailBoldFont(fontSize)
                     mutableAttr.addAttributes([NSFontAttributeName: font as Any], range: range)
                 }
-                mutableAttr.addAttributes([NSForegroundColorAttributeName: UIColor.black], range: range)
+                mutableAttr.addAttributes([NSForegroundColorAttributeName: fontColor], range: range)
             } else if tag == "sup" {
                 mutableAttr.addAttributes([NSFontAttributeName: subSmallTextFont()], range: range)
                 mutableAttr.addAttributes([NSBaselineOffsetAttributeName: 10], range: range)
@@ -351,12 +317,8 @@ class DetailRamlContentDataProvider: NSObject {
                 mutableAttr.addAttributes([NSFontAttributeName: smallTextFont()], range: range)
             } else if tag == "a", let href = subJson["source"].string, let url = URL(string: href) {
                 mutableAttr.addAttributes(["kCustomKeyOnlyWork": url], range: range)
-                var color = UIColor.black
-//                if !ReaderSetting.shared().isLightModeBackground {
-//                    color = color!.withAlphaComponent(0.7)
-//                }
-                if let dict = NSMutableAttributedString.mangoHtmlHrefLinkAttribute( DetailRamlContentDataProvider.detailNormalFont(),
-                                                                            fontColor:color) as NSDictionary as? [String: AnyObject] {
+                if let dict = NSMutableAttributedString.mangoHtmlHrefLinkAttribute(font,
+                                                                            fontColor:fontColor) as NSDictionary as? [String: AnyObject] {
                     mutableAttr.addAttributes(dict, range: range)
                 }
             } else if tag == "img", let source = subJson["source"].string {
@@ -395,7 +357,7 @@ class DetailRamlContentDataProvider: NSObject {
                 imageNode.contentHeight = imageNode.imageHeight
             } else {
                 imageNode.isUnknownSize = true
-                imageNode.contentHeight = 200
+                imageNode.contentHeight = 100
             }
             imageNode.contentWidth = self.contentMaxWidth
             imageNode.rawJsonString = rawString
@@ -542,8 +504,8 @@ class DetailRamlContentDataProvider: NSObject {
                         let columnTextNode = HtmlTableColumnNode()
                         columnTextNode.textNode = textNode
                         let mutableAttr:NSMutableAttributedString = NSMutableAttributedString.mutableHtmlBodyText(text:text,
-                                                                                                                  textColor: DetailRamlContentDataProvider.normalTextColor(),
-                                                                                                                  font: DetailRamlContentDataProvider.detailNormalFont(),
+                                                                                                                  textColor: normalTextColor(),
+                                                                                                                  font: detailNormalFont(),
                                                                                                                   shouldSmallFont: false,
                                                                                                                   alignment: shouldAlignCenter ? .center : .left)
                         
@@ -552,7 +514,10 @@ class DetailRamlContentDataProvider: NSObject {
                                                                        subJson: subJson,
                                                                        shouldAlignCenter: shouldAlignCenter,
                                                                        textNode: textNode,
-                                                                       shouldSmallFont: false, maxWidth: width)
+                                                                       shouldSmallFont: false,
+                                                                       font:detailNormalFont(), 
+                                                                       fontColor:normalTextColor(),
+                                                                       maxWidth: width)
                         }
                         textNode.contentString = mutableAttr                        
                         columnTextNode.tagID = idStr // FIXME: add column base
@@ -655,24 +620,10 @@ class DetailRamlContentDataProvider: NSObject {
         return -1
     }
     
-    func reloadDetailTextFontStyle() {
-        let font = DetailRamlContentDataProvider.detailNormalFont()
-        let textColor = DetailRamlContentDataProvider.normalTextColor()
-        for textNode in contentNodeArray {
-            if let textNode = textNode as? HtmlTextNode, let contentString = textNode.contentString {
-                let newAttr = NSMutableAttributedString(attributedString: contentString)
-                let fullRange = NSRange(location: 0, length: newAttr.length)
-                newAttr.addAttributes([NSFontAttributeName:font], range: fullRange)
-                newAttr.addAttributes([NSForegroundColorAttributeName:textColor], range: fullRange)
-                textNode.contentString = newAttr
-            }
-        }
-    }
-    
     //Utils style
     //Font
-    class func detailNormalFont() -> UIFont {        
-        return UIFont.systemFont(ofSize: 16)
+    func detailNormalFont() -> UIFont {        
+        return UIFont.systemFont(ofSize: setting.fontSize)
     }
             
     class func detailSmallFont() -> UIFont {        
@@ -696,13 +647,8 @@ class DetailRamlContentDataProvider: NSObject {
     }
         
     //Color
-    class func normalTextColor() -> UIColor {
-        return .black
-    }
-    
-    class func detailBoldTextColor() -> UIColor {
-        return .black
-    }
-        
+    func normalTextColor() -> UIColor {
+        return setting.fontColor
+    }        
         
 }

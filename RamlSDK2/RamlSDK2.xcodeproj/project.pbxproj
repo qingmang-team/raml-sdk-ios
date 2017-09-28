@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7FB585261F7CEEE300A994C0 /* RAMLRenderSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB585241F7CE94100A994C0 /* RAMLRenderSetting.swift */; };
 		7FF2872F1F3DC24B009235DE /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF2872E1F3DC24B009235DE /* SDWebImage.framework */; };
 		7FF287311F3DC250009235DE /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF287301F3DC250009235DE /* SwiftyJSON.framework */; };
 		7FF2874B1F3DF07A009235DE /* DetailRamlContentDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF287331F3DF07A009235DE /* DetailRamlContentDataProvider.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7FB585241F7CE94100A994C0 /* RAMLRenderSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLRenderSetting.swift; sourceTree = "<group>"; };
 		7FF2872E1F3DC24B009235DE /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = "Carthage/Checkouts/SDWebImage/build/Debug-iphoneos/SDWebImage.framework"; sourceTree = "<group>"; };
 		7FF287301F3DC250009235DE /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "Carthage/Checkouts/SwiftyJSON/build/Debug-iphoneos/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		7FF287331F3DF07A009235DE /* DetailRamlContentDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailRamlContentDataProvider.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				7FF287371F3DF07A009235DE /* Utils */,
 				7FF287391F3DF07A009235DE /* Model */,
 				7FF287451F3DF07A009235DE /* View */,
+				7FB585241F7CE94100A994C0 /* RAMLRenderSetting.swift */,
 			);
 			path = Raml;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				7FF2875C1F3DF07A009235DE /* RAMLDetailImageCell.swift in Sources */,
 				7FF2874F1F3DF07A009235DE /* HtmlTableNode.swift in Sources */,
 				7FF287531F3DF07A009235DE /* HtmlImageNode.swift in Sources */,
+				7FB585261F7CEEE300A994C0 /* RAMLRenderSetting.swift in Sources */,
 				7FF2875E1F3DF07A009235DE /* RAMLDetailVideoCell.swift in Sources */,
 				7FF2874D1F3DF07A009235DE /* InnerLineImageAttachment.swift in Sources */,
 			);
