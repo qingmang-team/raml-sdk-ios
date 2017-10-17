@@ -1,0 +1,9 @@
+[submodule "Carthage/Checkouts/SDWebImage"]
+	path = RamlSDK2/Carthage/Checkouts/SDWebImage
+	url = https://github.com/rs/SDWebImage.git
+[submodule "Carthage/Checkouts/SwiftyJSON"]
+	path = RamlSDK2/Carthage/Checkouts/SwiftyJSON
+	url = https://github.com/SwiftyJSON/SwiftyJSON.git
+[submodule "Carthage/Checkouts/FLAnimatedImage"]
+	path = RamlSDK2/Carthage/Checkouts/FLAnimatedImage
+	url = https://github.com/Flipboard/FLAnimatedImage.git

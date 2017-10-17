@@ -1,0 +1,41 @@
+{
+  "name": "RamlSDK",
+  "version": "0.9.0",
+  "summary": "A short description of RamlSDK.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "chenheng": "chenheng@qingmang.me"
+  },
+  "source": {
+    "git": "/Users/chenheng/raml-iOS"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "RamlSDK/**/*.swift",
+  "resource_bundles": {
+    "RamlSDK": [
+      "RamlSDK/Assets/*.png"
+    ]
+  },
+  "frameworks": [
+    "UIKit",
+    "AVFoundation"
+  ],
+  "dependencies": {
+    "SwiftyJSON": [
+
+    ],
+    "SDWebImage": [
+
+    ],
+    "SDWebImage/GIF": [
+
+    ]
+  }
+}
