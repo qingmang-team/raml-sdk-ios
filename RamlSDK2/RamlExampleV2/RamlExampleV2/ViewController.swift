@@ -14,7 +14,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let path = Bundle.main.path(forResource: "article", ofType: "json") {
+        if let path = Bundle.main.path(forResource: "article4", ofType: "json") {
             do {
                 let str = try String(contentsOfFile: path)
                 let json = JSON(parseJSON:str)
