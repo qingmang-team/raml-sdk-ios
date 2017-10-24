@@ -65,8 +65,10 @@ class RAMLDetailAudioCell: UICollectionViewCell {
     //Property
     var playBlock:((String) -> Void)?
     lazy var playButton:UIButton = {
-        let button = UIButton(type: UIButtonType.custom)        
-        button.setImage(UIImage(named: "audio_card_icon"), for: UIControlState.normal)
+        let button = UIButton(type: UIButtonType.custom)
+        let bundle = Bundle(for: RAMLDetailVideoCell.self)
+        let image = UIImage(named: "audio_card_icon", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: UIControlState.normal)
         button.frame = self.bounds
         button.imageView?.contentMode = .center
         button.alpha = 0.7

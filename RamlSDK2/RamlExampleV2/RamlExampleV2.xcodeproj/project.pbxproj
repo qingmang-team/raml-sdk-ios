@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01CB13201F9F1F9400146459 /* article4.json in Resources */ = {isa = PBXBuildFile; fileRef = 01CB131F1F9F1F9400146459 /* article4.json */; };
 		7FD01ED61F72701000929453 /* RamlSDK2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FD01ED71F72701000929453 /* RamlSDK2.framework */; };
 		7FDE45831F3DF34E001A515F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDE45821F3DF34E001A515F /* AppDelegate.swift */; };
 		7FDE45851F3DF34E001A515F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDE45841F3DF34E001A515F /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01CB131F1F9F1F9400146459 /* article4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = article4.json; sourceTree = "<group>"; };
 		7FD01ED71F72701000929453 /* RamlSDK2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RamlSDK2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FDE457F1F3DF34E001A515F /* RamlExampleV2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RamlExampleV2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FDE45821F3DF34E001A515F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 		7FDE45971F3DF459001A515F /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				01CB131F1F9F1F9400146459 /* article4.json */,
 				7FDE45981F3DF459001A515F /* article3.json */,
 				7FDE45991F3DF459001A515F /* article2.json */,
 				7FDE459A1F3DF459001A515F /* article.json */,
@@ -157,6 +160,7 @@
 				7FDE459D1F3DF459001A515F /* article.json in Resources */,
 				7FDE458A1F3DF34E001A515F /* Assets.xcassets in Resources */,
 				7FDE459C1F3DF459001A515F /* article2.json in Resources */,
+				01CB13201F9F1F9400146459 /* article4.json in Resources */,
 				7FDE45881F3DF34E001A515F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

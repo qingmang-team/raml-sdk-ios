@@ -47,9 +47,9 @@ class DetailRamlContentDataProvider: NSObject {
     
     func checkImageNodeLayout(node:HtmlImageNode, index:Int) {
         if node.isUnknownSize {
-            node.imageHeight = 40
+            node.imageHeight = 210
             node.contentWidth = self.contentMaxWidth
-            node.contentHeight = 40
+            node.contentHeight = 200
             node.imageWidth = self.contentMaxWidth
         }
     }
@@ -112,15 +112,15 @@ class DetailRamlContentDataProvider: NSObject {
                 self.imageNodeArray.append(imageHtmlNode)
                 self.imageURLArray.append(url)
             }
-            if previousNode == nil {
-                htmlNode.top = 0
-            } else if let htmlTextNode = htmlNode as? HtmlTextNode {
+            if let htmlTextNode = htmlNode as? HtmlTextNode {
                 htmlTextNode.textLeftPadding = self.setting.textLeftPadding
                 htmlTextNode.textRightPadding = self.setting.textRightPadding
                 let size = sizeOfTextNode(node: htmlTextNode)
                 htmlTextNode.contentWidth = self.contentMaxWidth
                 htmlTextNode.contentHeight = size.height
-                if (htmlTextNode.isHeading) {
+                if previousNode == nil {
+                    htmlNode.top = 0
+                } else if (htmlTextNode.isHeading) {
                     htmlNode.top = 28
                 } else if (htmlTextNode.isImageSubTitle) {
                     htmlNode.top = 10
@@ -132,7 +132,11 @@ class DetailRamlContentDataProvider: NSObject {
             } else if previousNode is HtmlImageNode, let imageNode = htmlNode as? HtmlImageNode {
                 imageNode.top = 14
             } else {
-                htmlNode.top = 14
+                if previousNode == nil {
+                    htmlNode.top = 0
+                }else {
+                    htmlNode.top = 14
+                }                
             }
             if (htmlNode.top > 0) {
                 htmlNode.top = htmlNode.top - 4

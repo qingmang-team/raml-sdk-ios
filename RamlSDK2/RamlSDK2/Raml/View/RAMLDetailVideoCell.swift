@@ -55,8 +55,10 @@ class RAMLDetailVideoCell: UICollectionViewCell {
     //Property
     var playBlock:((String) -> Void)?
     lazy var playButton:UIButton = {
-        let button = UIButton(type: UIButtonType.custom)        
-        button.setImage(UIImage(named: "video_player"), for: UIControlState.normal)
+        let button = UIButton(type: UIButtonType.custom)
+        let bundle = Bundle(for: RAMLDetailVideoCell.self)
+        let image = UIImage(named: "video_player", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: UIControlState.normal)
         button.frame = self.bounds
         button.alpha = 0.7
         button.autoresizingMask = [.flexibleWidth,.flexibleHeight]
