@@ -14,14 +14,14 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let path = Bundle.main.path(forResource: "article4", ofType: "json") {
+        if let path = Bundle.main.path(forResource: "article5", ofType: "json") {
             do {
                 let str = try String(contentsOfFile: path)
                 let json = JSON(parseJSON:str)
                 let articleJson = json["article"]
                 let contentHtml = articleJson["contentHtml"].stringValue
                 let setting = RAMLRenderSetting()
-                setting.fontColor = .red
+                setting.fontColor = .black
                 setting.fontSize = 16
                 let view = RamlRenderView(frame: self.view.bounds, 
                                           contentHtml: contentHtml, 
