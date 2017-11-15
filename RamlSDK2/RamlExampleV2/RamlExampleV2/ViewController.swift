@@ -27,6 +27,10 @@ class ViewController: UIViewController {
                                           contentHtml: contentHtml, 
                                           setting:setting)
                 view.viewController = self
+                view.onLinkTappedActionBlock = {
+                    [weak self] url in
+                    print(url)
+                }
                 self.view.addSubview(view)
             } catch {
                 

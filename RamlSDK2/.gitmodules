@@ -1,4 +1,0 @@
-[submodule "Carthage/Checkouts/SwiftyJSON"]
-	url = https://github.com/SwiftyJSON/SwiftyJSON.git
-[submodule "Carthage/Checkouts/SDWebImage"]
-	url = https://github.com/rs/SDWebImage.git

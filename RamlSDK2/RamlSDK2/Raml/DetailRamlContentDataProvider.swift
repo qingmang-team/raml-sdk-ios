@@ -151,8 +151,8 @@ class DetailRamlContentDataProvider: NSObject {
     
     func sizeOfTextNode(node:HtmlTextNode) -> CGSize {
         if let str = node.contentString {
-            let maxWidth = contentMaxWidth - node.textLeftPadding - node.textRightPadding
-            let bounds = str.boundingRect(with: CGSize(width:maxWidth, height:1000000), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], context: nil)
+            let maxWidth = contentMaxWidth - node.textLeftPadding - node.textRightPadding            
+            let bounds = str.boundingRect(with: CGSize(width:maxWidth, height:1000000), options: [.usesLineFragmentOrigin,.usesFontLeading], context: nil)
             return bounds.size
         }
         return .zero
@@ -263,14 +263,14 @@ class DetailRamlContentDataProvider: NSObject {
                     if let result = result, result.resultType == .link, let url = result.url {
                         var foundLink = false
                         mutableAttr.enumerateAttributes(in: result.range, options: [], using: { (dict, range, stop) in
-                            if dict.keys.contains("kCustomKeyOnlyWork") {
+                            if dict.keys.contains(NSLinkAttributeName) {
                                 foundLink = true
                             }
                         })
                         if !foundLink {
                             if let dict = NSMutableAttributedString.mangoHtmlHrefLinkAttribute(font,
                                                                                         fontColor:color) as NSDictionary as? [String: AnyObject] {
-                                mutableAttr.addAttributes(["kCustomKeyOnlyWork": url], range: result.range)
+                                mutableAttr.addAttributes([NSLinkAttributeName: url], range: result.range)
                                 mutableAttr.addAttributes(dict, range: result.range)                            
                             }    
                         }
@@ -320,7 +320,7 @@ class DetailRamlContentDataProvider: NSObject {
             } else if tag == "small" {
                 mutableAttr.addAttributes([NSFontAttributeName: smallTextFont()], range: range)
             } else if tag == "a", let href = subJson["source"].string, let url = URL(string: href) {
-                mutableAttr.addAttributes(["kCustomKeyOnlyWork": url], range: range)
+                mutableAttr.addAttributes([NSLinkAttributeName: url], range: range)
                 if let dict = NSMutableAttributedString.mangoHtmlHrefLinkAttribute(font,
                                                                             fontColor:fontColor) as NSDictionary as? [String: AnyObject] {
                     mutableAttr.addAttributes(dict, range: range)
