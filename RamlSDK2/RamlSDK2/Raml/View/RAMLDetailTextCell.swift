@@ -8,6 +8,7 @@
 
 import UIKit
 import SDWebImage
+import TTTAttributedLabel
 
 class RAMLDetailTextCell: UICollectionViewCell {
     
@@ -17,8 +18,15 @@ class RAMLDetailTextCell: UICollectionViewCell {
         super.init(frame: frame)        
     }
     
-    func setup() {
-        contentView.addSubview(textLabel)
+    func setup() {                        
+        addSubview(textLabel)
+        textLabel.isUserInteractionEnabled = true
+        textLabel.delegate = self
+        textLabel.lineBreakMode = .byTruncatingTail        
+        textLabel.numberOfLines = 0
+        
+        let dashed = NSUnderlineStyle.patternDot.rawValue | NSUnderlineStyle.styleSingle.rawValue
+        textLabel.linkAttributes = [NSUnderlineStyleAttributeName: NSNumber(value: dashed)]        
     }
     
     func checkAttachImageLoadFinish(image: UIImage, attachment: InnerLineImageAttachment) {
@@ -39,11 +47,21 @@ class RAMLDetailTextCell: UICollectionViewCell {
     func config(textNode: HtmlTextNode) {
         setup()
         self.textNode = textNode
-        textLabel.attributedText = textNode.contentString
+        if let contentString = textNode.contentString {
+            textLabel.attributedText = contentString
+            contentString.enumerateAttribute(NSLinkAttributeName, in: NSRange(location: 0, length: contentString.length), options: NSAttributedString.EnumerationOptions.reverse, using: {
+                [weak self] (value, range, stop) in
+                guard let value = value else {
+                    return
+                }
+                if let url = value as? URL {
+                    _ = self?.textLabel.addLink(to: url, with: range)   
+                }            
+            })    
+        }                 
         for attach in textNode.imageAttachArray {
             let urlStr = attach.imageURL
-            SDWebImageManager.shared().loadImage(with: URL(string: urlStr), options: SDWebImageOptions.avoidAutoSetImage, progress: { _, _, _ in
-                
+            SDWebImageManager.shared().loadImage(with: URL(string: urlStr), options: SDWebImageOptions.avoidAutoSetImage, progress: { _, _, _ in                
             }, completed: {[weak self, weak attach] image, _, _, _, _, _ in
                 if let attachment = attach, let image = image {
                     self?.checkAttachImageLoadFinish(image: image, attachment: attachment)   
@@ -57,11 +75,12 @@ class RAMLDetailTextCell: UICollectionViewCell {
         if let textNode = self.textNode, textNode.shouldAlignCenter {
             textLabel.sizeToFit()
             textLabel.center = CGPoint(x: frame.width / 2, y: frame.height / 2)
-        } else {
-            //            textLabel.frame = self.bounds;
+        } else {            
             let leftPadding = textNode?.textLeftPadding ?? 0
             let rightPadding = textNode?.textRightPadding ?? 0
-            textLabel.frame = CGRect(x: leftPadding, y: 0, width: frame.size.width - rightPadding - leftPadding, height: frame.size.height)
+            let maxWidth = frame.size.width - rightPadding - leftPadding
+            textLabel.frame = CGRect(x: leftPadding, y: 0, width:maxWidth , height: frame.size.height)            
+//            
         }
     }
     
@@ -70,9 +89,16 @@ class RAMLDetailTextCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var textLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
+    var onLinkTappedActionBlock: ((URL) -> Void)?
+    
+    lazy var textLabel: TTTAttributedLabel = {        
+        let label = TTTAttributedLabel(frame: .zero)
         return label
     }()
+}
+
+extension RAMLDetailTextCell : TTTAttributedLabelDelegate {
+    func attributedLabel(_ label: TTTAttributedLabel!, didSelectLinkWith url: URL!) {        
+        onLinkTappedActionBlock?(url)
+    }   
 }
